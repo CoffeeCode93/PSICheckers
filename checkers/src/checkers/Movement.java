@@ -11,6 +11,7 @@ public class Movement {
 	private int score = 0;
 	private boolean valid = false;
 	private boolean eatMovement = false;
+	private Piece eatedPiece = null;
 	private Piece piece;
 	
 	public Movement(Piece p) {
@@ -27,6 +28,16 @@ public class Movement {
 		this.startY = p.getY();
 	}
 	
+	public void debug() {
+		System.out.println("Will move to: " + goX + "-" + goY);
+	}
+	
+	public Piece getEatedPiece() {
+		return eatedPiece;
+	}
+	public void setEatedPiece(Piece eatedPiece) {
+		this.eatedPiece = eatedPiece;
+	}
 	
 	public int getStartX() {
 		return startX;

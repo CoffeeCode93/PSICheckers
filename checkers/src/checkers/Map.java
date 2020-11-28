@@ -1,9 +1,6 @@
 package checkers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Map {
 	LinkedList<Piece> blacks = new LinkedList<Piece>();
@@ -59,6 +56,7 @@ public class Map {
 		        for (int j= 0; j < map[1].length; j++) 
 		        		if(map[i][j] == eaten) 
 		        			map[i][j] = null;
+		 
 		 if (eater.getType() == 1) {
 			scorePlayer1++;	
 			whites.remove(eaten);
@@ -70,37 +68,19 @@ public class Map {
 	}
 	
 	boolean movePiece(Piece d) {
-		int x = d.getX();
+		int x = d.getX();		
 		int y = d.getY();
 		
 		if (MoveChecker.checkMovement(d.getMovement(), map)) {
-			
 			int nx = d.getMovement().getGoX();
 			int ny = d.getMovement().getGoY();
-			
 			map[x][y] = null;
 			map[nx][ny] = d;
 			d.setX(nx);
 			d.setY(ny);
 			
 			if(d.getMovement().isEatMovement()) {
-				if(d.getType() == 1) {
-					if(ny > y) 
-						if(map[nx+1][ny-1] != null)
-							eatPiece(map[nx+1][ny-1], d);
-					if(ny < y)
-						if(map[nx+1][ny+1] != null)
-							eatPiece(map[nx+1][ny+1], d);			
-					
-				}
-				if(d.getType() == 2) {
-					if(ny > y) 
-						if(map[nx-1][ny-1] != null)
-							eatPiece(map[nx-1][ny-1], d);
-					if(ny < y)
-						if(map[nx-1][ny+1] != null)
-							eatPiece(map[nx-1][ny+1], d);				
-				}
+				eatPiece(d.getMovement().getEatedPiece(), d);
 			}
 			return true;
 		} else {
