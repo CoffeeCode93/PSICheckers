@@ -8,9 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		Map m = new Map();
-		
-		
+		Map m = new Map();	
 		
 		System.out.println("You are Player 1 (black)");
 
@@ -22,14 +20,14 @@ public class Main {
 					boolean playerMoved=false;
 					while(!playerMoved){
 						System.out.println("Select piece using 'row column'. For example: 0 1");
-						s = in.readLine();
+						s = in.readLine().trim();
 						String pos[] = s.split(" ");
 						Piece d = m.getBlackPiece(Integer.parseInt(pos[0]), Integer.parseInt(pos[1]));
 	
 						if (d != null) {
 								System.out.println("Where to move");
 								s = "";
-								s = in.readLine();
+								s = in.readLine().trim();
 								pos[0] = "";
 								pos[1] = "";
 								
@@ -39,7 +37,6 @@ public class Main {
 								playerMoved = m.movePiece(d);
 								m.showMap();
 							
-							//m.mostrarTableroDebug();
 						} else {
 							System.out.println("Wrong position. Try again!");
 						}
@@ -55,9 +52,6 @@ public class Main {
 					
 				}
 			} while (!s.equals("y"));
-		
-		
-		
 	}
 	
 	private static void moveIA(Map m) {

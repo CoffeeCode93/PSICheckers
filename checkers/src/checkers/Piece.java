@@ -7,18 +7,24 @@ public class Piece {
 	private int type = 0;
 	private boolean isKing = false;
 	private Movement movement = new Movement(this);
-	public boolean isEated = false;
+	private boolean isEated = false;
 	
 	public Piece(int x, int y) {
-		// TODO Auto-generated constructor stub
-		this.x = x; this.y = y;
+		this.x = x; 
+		this.y = y;
 	}
 	
 	void move(int x, int y) {
-		// Check if is a valid position
-		// if true
-			movement = new Movement(this, x, y);
+		movement = new Movement(this, x, y);
 		return;
+	}
+	
+	public boolean isEated() {
+		return isEated;
+	}
+	
+	public void setEated(boolean isEated) {
+		this.isEated = isEated;
 	}
 	
 	public int getX() {

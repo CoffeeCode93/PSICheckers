@@ -3,11 +3,11 @@ package checkers;
 import java.util.LinkedList;
 
 public class Map {
-	LinkedList<Piece> blacks = new LinkedList<Piece>();
-	LinkedList<Piece> whites = new LinkedList<Piece>();
-	int scorePlayer1 = 0;
-	int scorePlayer2 = 0;
-	Piece[][] map = new Piece[8][8];
+	private LinkedList<Piece> blacks = new LinkedList<Piece>();
+	private LinkedList<Piece> whites = new LinkedList<Piece>();
+	private int scorePlayer1 = 0;
+	private int scorePlayer2 = 0;
+	private Piece[][] map = new Piece[8][8];
 	// 1 = negras, 2 = blancas
 	
 	public Map() {
@@ -16,7 +16,6 @@ public class Map {
 	}
 
 	void showMap() {
-		System.out.println("Score Player 1: "+scorePlayer1);
 		for (int i = 0; i < map.length; i++) {
 			System.out.print(i + ". ");
 			for (int j = 0; j < map.length; j++) {
@@ -28,7 +27,8 @@ public class Map {
 			}
 			System.out.println();
 		}
-		System.out.println("    0.  1.  2.  3.  4.  5.  6.  7.");
+		System.out.println("    0.  1.  2.  3.  4.  5.  6.  7.\n");
+		System.out.println("Score Player 1: "+scorePlayer1);
 		System.out.println("Score Player 2: "+scorePlayer2);
 	}
 	
@@ -76,6 +76,11 @@ public class Map {
 			int ny = d.getMovement().getGoY();
 			map[x][y] = null;
 			map[nx][ny] = d;
+			
+			if ( (d.getType() == 1 && nx == 0) || (d.getType() == 2 && nx == 7) ) {
+				d.setKing(true);
+			}
+			
 			d.setX(nx);
 			d.setY(ny);
 			

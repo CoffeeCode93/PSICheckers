@@ -24,8 +24,12 @@ public class MoveChecker {
 							return false;
 						boolean canEat = checkEat(movement, map);
 
-						if (!canEat)
+						if (!canEat) {
+							movement.setEatMovement(false);
+							movement.setValid(false);
 							return false;
+						}
+						
 					}			
 					movement.setValid(true);
 					return true;
@@ -44,8 +48,12 @@ public class MoveChecker {
 							return false;
 						boolean canEat = checkEat(movement, map);
 						
-						if (!canEat)
+						if (!canEat) {
+							movement.setEatMovement(false);
+							movement.setValid(false);
 							return false;
+						}
+						
 					}			
 					movement.setValid(true);
 					return true;
@@ -61,19 +69,19 @@ public class MoveChecker {
 	}
 	
 
-	static LinkedList<Movement> getMovements(Piece d, Piece[][] map){
-		LinkedList<Movement> list = new LinkedList<Movement>();
+	static LinkedList<Movement> getMovements(Piece d, Piece[][] map){		
 		int startX = d.getX();
 		int startY = d.getY();
+		
+		LinkedList<Movement> list = new LinkedList<Movement>();
 		Piece p = new Piece(startX, startY);
-
 		
 		int nextX;
 		int nextY;
-		
 		int max;
 		
 		if (d.isKing()) {
+			p.setKing(true);
 			max = 4;
 			
 			switch (d.getType()) {
@@ -176,6 +184,7 @@ public class MoveChecker {
 			}
 			
 		} else {
+			p.setKing(false);
 			max = 2;
 			
 			switch (d.getType()) {
@@ -250,6 +259,9 @@ public class MoveChecker {
 		int type = movement.getPiece().getType();
 		boolean king = movement.getPiece().isKing();
 		
+		if ( (nx == 0 || nx == 7) || (ny == 0 || ny == 7) ) {
+			return false;
+		}
 		
 		if (king) {
 			if (nx > x) {
@@ -314,6 +326,7 @@ public class MoveChecker {
 			
 		}
 		movement.setEatedPiece(map[nx][ny]);
+		map[nx][ny].setEated(true);
 		movement.setEatMovement(true);
 		return true;
 	}
