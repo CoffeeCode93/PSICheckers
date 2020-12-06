@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class Map {
 	private LinkedList<Piece> blacks = new LinkedList<Piece>();
-	private LinkedList<Piece> whites = new LinkedList<Piece>();
+	private LinkedList<IAPiece> whites = new LinkedList<IAPiece>();
 	private int scorePlayer1 = 0;
 	private int scorePlayer2 = 0;
 	private Piece[][] map = new Piece[8][8];
@@ -52,10 +52,12 @@ public class Map {
 	}
 	
 	void eatPiece(Piece eaten, Piece eater) {
-		 for (int i = 0; i < map[0].length; i++)
-		        for (int j= 0; j < map[1].length; j++) 
-		        		if(map[i][j] == eaten) 
-		        			map[i][j] = null;
+		for (int i = 0; i < map[0].length; i++)
+			for (int j= 0; j < map[1].length; j++) 
+		        if(map[i][j] == eaten) {
+		        	map[i][j] = null;		        			
+		        }
+		
 		 
 		 if (eater.getType() == 1) {
 			scorePlayer1++;	
@@ -98,7 +100,7 @@ public class Map {
 	void setStartPosition() {
 		for (int i = 0; i < map.length; i++) {
 			if (i%2 == 0) {
-				Piece d = new Piece(0, i);
+				IAPiece d = new IAPiece(0, i);
 				map[0][i] = d;
 				d.setType(2); 
 				whites.addLast(d);
@@ -108,7 +110,7 @@ public class Map {
 
 		for (int i = 0; i < map.length; i++) {
 			if (i%2 != 0) {
-				Piece d = new Piece(1, i);
+				IAPiece d = new IAPiece(1, i);
 				map[1][i] = d;
 				d.setType(2); 
 				whites.addLast(d);
@@ -118,7 +120,7 @@ public class Map {
 		
 		for (int i = 0; i < map.length; i++) {
 			if (i%2 == 0) {
-				Piece d = new Piece(2, i);
+				IAPiece d = new IAPiece(2, i);
 				map[2][i] = d;
 				d.setType(2); 
 				whites.addLast(d);
@@ -165,11 +167,11 @@ public class Map {
 		this.blacks = blacks;
 	}
 
-	public LinkedList<Piece> getWhites() {
+	public LinkedList<IAPiece> getWhites() {
 		return whites;
 	}
 
-	public void setWhites(LinkedList<Piece> whites) {
+	public void setWhites(LinkedList<IAPiece> whites) {
 		this.whites = whites;
 	}
 

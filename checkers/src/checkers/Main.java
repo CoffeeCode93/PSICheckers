@@ -56,22 +56,24 @@ public class Main {
 	
 	private static void moveIA(Map m) {
 		// TODO Auto-generated method stub
-		LinkedList<Piece> iaPieces= m.getWhites();
+		LinkedList<IAPiece> iaPieces= m.getWhites();
+		System.out.println("**********************************");
 		System.out.println("Player 2 turn.\n");
-		
-		boolean moved = false;
-		while(!moved) {
-			int get = (int) (Math.random() * iaPieces.size());
-			Piece p = iaPieces.get(get);
-			try{
-				LinkedList<Movement> moves = MoveChecker.getMovements(p, m.getMap());
-				p.setMovement(moves.get(0));
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-			}
-			moved = m.movePiece(p);
+		LinkedList<IAPiece> movePieces = new LinkedList<IAPiece>();
+		for (IAPiece piece : iaPieces) {
+			boolean hasMoves = piece.checkValidMoves(m.getMap());
 			
+			if (hasMoves) {
+				movePieces.add(piece);
+			}
+				
+		}
+		System.out.println(movePieces.size());
+		
+		if (movePieces.size() > 0) {
+			IAPiece p = movePieces.get(0);
+			p.setMovement(p.getValidMoves().get(0));
+			m.movePiece(p);
 		}
 	}
 }

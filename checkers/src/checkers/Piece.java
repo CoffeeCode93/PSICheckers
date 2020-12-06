@@ -65,6 +65,7 @@ public class Piece {
 
 	public void setMovement(Movement movement) {
 		this.movement = movement;
+		movement.setPiece(this);
 	}
 
 }

@@ -28,6 +28,18 @@ public class Movement {
 		this.startY = p.getY();
 	}
 	
+	public Movement(Movement movement) {
+		this.startX = movement.startX;
+		this.startY = movement.startY;
+		this.goX = movement.goX;
+		this.goY = movement.goY;
+		this.score = movement.score;
+		this.valid = movement.valid;
+		this.eatMovement = movement.eatMovement;
+		this.eatedPiece = movement.eatedPiece;
+		this.piece = null;
+	}
+
 	public void debug() {
 		System.out.println("Will move to: " + goX + "-" + goY);
 	}
