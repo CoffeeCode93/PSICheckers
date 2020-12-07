@@ -136,7 +136,7 @@ public class MoveChecker {
 							list.add(m);
 						}						
 					} else {
-						nextY = startY+1;
+						nextY = startY-1;
 						nextX = startX+1;
 						p.move(nextX, nextY);
 						Movement m = new Movement(p.getMovement());
@@ -199,7 +199,7 @@ public class MoveChecker {
 							list.add(m);
 						}					
 					} else {
-						nextY = startY+1;
+						nextY = startY-1;
 						nextX = startX+1;
 						p.move(nextX, nextY);
 						p.setType(d.getType());

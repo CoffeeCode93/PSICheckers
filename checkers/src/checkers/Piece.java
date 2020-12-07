@@ -17,6 +17,17 @@ public class Piece {
 		this.y = y;
 	}
 	
+	public Piece(Piece p) {
+		this.x = p.x;
+		this.y = p.y;
+		this.type = p.type;
+		this.isKing = p.isKing;
+		this.movement = p.movement;
+		this.movement.setPiece(this);
+		this.isEated = p.isEated;
+		this.validMoves = new LinkedList<Movement>(p.getValidMoves());
+	}
+	
 	void move(int x, int y) {
 		movement = new Movement(this, x, y);
 		return;
