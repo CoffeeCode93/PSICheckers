@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Main {
 
@@ -18,8 +19,8 @@ public class Main {
 				//m.showMap();
 				
 				try {
-					boolean playerMoved=false;
-					/*
+				/* 	boolean playerMoved=false;
+					
 					while(!playerMoved){
 						System.out.println("Select piece using 'row column'. For example: 0 1");
 						s = in.readLine().trim();
@@ -42,8 +43,8 @@ public class Main {
 						} else {
 							System.out.println("Wrong position. Try again!");
 						}
-					}
-					*/
+					} */
+					
 
 					moveIA(m, false);
 					System.out.println();
@@ -63,7 +64,7 @@ public class Main {
 	}
 	
 	private static void moveIA(Map m, boolean ia) {
-		Map a = new Map(m);
+
 		LinkedList<Piece> iaPieces;
 		if (ia) {
 			System.out.println("\n**********************************");
@@ -88,9 +89,18 @@ public class Main {
 		}
 		
 		if (movePieces.size() > 0) {
-			Piece p = movePieces.get(0);
+
+			Random rand = new Random();
+			int upperbound = movePieces.size();
+      		int random = rand.nextInt(upperbound);
+
+			Piece p = movePieces.get(random);
 			Collections.sort(p.getValidMoves());
-			p.setMovement(p.getValidMoves().get(0));
+
+			upperbound = p.getValidMoves().size();
+      		random = rand.nextInt(upperbound);
+
+			p.setMovement(p.getValidMoves().get(random));
 			m.movePiece(p);
 		}
 	}
