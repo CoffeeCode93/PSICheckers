@@ -15,14 +15,15 @@ public class Map {
 	}
 
 	public Map(Map m) {
-		this.blacks = m.blacks;
-		this.whites = m.whites;
+		this.blacks = new LinkedList<Piece>(m.blacks);
+		this.whites = new LinkedList<Piece>(m.whites);
 		this.scorePlayer1 = m.scorePlayer1;
 		this.scorePlayer2 = m.scorePlayer2;
+		
 		for (int  i = 0; i < 8; i++) {
 			for(int j = 0; j < 8 ; j++) {
 				if (m.map[i][j] != null) {
-					this.map[i][j] = new Piece(m.map[i][j]);
+					this.map[i][j] = new Piece(m.getMap()[i][j]);
 				}
 			}
 		}

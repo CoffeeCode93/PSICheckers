@@ -63,6 +63,7 @@ public class Main {
 	}
 	
 	private static void moveIA(Map m, boolean ia) {
+		Map a = new Map(m);
 		LinkedList<Piece> iaPieces;
 		if (ia) {
 			System.out.println("\n**********************************");

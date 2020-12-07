@@ -22,10 +22,14 @@ public class Piece {
 		this.y = p.y;
 		this.type = p.type;
 		this.isKing = p.isKing;
-		this.movement = p.movement;
+		this.movement = new Movement(p.movement);
 		this.movement.setPiece(this);
 		this.isEated = p.isEated;
-		this.validMoves = new LinkedList<Movement>(p.getValidMoves());
+		if (p.getValidMoves() != null) {
+			this.validMoves = new LinkedList<Movement>(p.getValidMoves());			
+		} else {
+			this.validMoves = new LinkedList<Movement>();
+		}
 	}
 	
 	void move(int x, int y) {
