@@ -1,9 +1,11 @@
 package checkers;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.io.*;
 
 public class Main {
 
@@ -14,12 +16,12 @@ public class Main {
 		System.out.println("You are Player 1 (black)");
 
 			String s = "";
+			m.showMap();
 			do {
-				//m.showMap();
 				
 				try {
 					boolean playerMoved=false;
-					/*
+					
 					while(!playerMoved){
 						System.out.println("Select piece using 'row column'. For example: 0 1");
 						s = in.readLine().trim();
@@ -43,13 +45,13 @@ public class Main {
 							System.out.println("Wrong position. Try again!");
 						}
 					}
-					*/
+					
 
-					moveIA(m, false);
-					System.out.println();
-					m.showMap();
+					// moveIA(m, false);
+					// System.out.println();
+					//m.showMap();
 					moveIA(m, true);
-					System.out.println();
+					System.out.println("devolveme IA");
 					m.showMap();
 					System.out.println("Exit? [y/*]");
 					s = "";
@@ -61,7 +63,14 @@ public class Main {
 				}
 			} while (!s.equals("y"));
 	}
-	
+
+	private final static int IA = 0;
+	private final static int HUMAN = 1;
+	private static int prof;
+	private static int score;
+	private static int scoreTotal[];
+
+
 	private static void moveIA(Map m, boolean ia) {
 		LinkedList<Piece> iaPieces;
 		if (ia) {
@@ -69,28 +78,62 @@ public class Main {
 			System.out.println("          Player 2 Move!");
 			System.out.println("**********************************\n");
 			iaPieces= m.getWhites();
-		} else {
-			System.out.println("\n**********************************");
-			System.out.println("          Player 1 Move!");
-			System.out.println("**********************************\n");
-			iaPieces= m.getBlacks();
+
+		//else {
+		// 	System.out.println("\n**********************************");
+		// 	System.out.println("          Player 1 Move!");
+		// 	System.out.println("**********************************\n");
+		// 	iaPieces= m.getBlacks();
+		// }
+			System.out.println("Temos " + iaPieces.size());
+			for(int i = 0; i < iaPieces.size(); i++){
+				Map map = new Map();
+				map = m;
+				scoreTotal[i] = minimax(5, IA, map, iaPieces.get(i));
+				System.out.println("PASO POR AQUI");
+			}
+			System.out.println("HOLAAAAAAAAA " + scoreTotal);
+		} 
+		return;
+
+		// LinkedList<Piece> movePieces = new LinkedList<Piece>();
+		// for (Piece piece : iaPieces) {
+		// 	boolean hasMoves = piece.checkValidMoves(m.getMap());
+			
+		// 	if (hasMoves) {
+		// 		movePieces.add(piece);
+		// 	}
+				
+		// }
+		
+		// if (movePieces.size() > 0) {
+		// 	Piece p = movePieces.get(0);
+		// 	Collections.sort(p.getValidMoves());
+		// 	p.setMovement(p.getValidMoves().get(0));
+		// 	m.movePiece(p);
+		//}
+	}
+
+	private static int minimax(int depth, int turn, Map m, Piece iaPiece){
+		LinkedList<Movement> movePieces = iaPiece.getValidMoves();
+		if(turn == IA){
+			for(int i = 0; i < movePieces.size(); i++){
+				Movement movement = movePieces.get(i);
+				iaPiece.setMovement(movement);
+				m.movePiece(iaPiece);
+				if (movement.isEatMovement()){
+					score += 10;
+				} else {
+					score += 1;
+				}
+			}
+			return score;
 		}
 
-		LinkedList<Piece> movePieces = new LinkedList<Piece>();
-		for (Piece piece : iaPieces) {
-			boolean hasMoves = piece.checkValidMoves(m.getMap());
-			
-			if (hasMoves) {
-				movePieces.add(piece);
-			}
-				
-		}
-		
-		if (movePieces.size() > 0) {
-			Piece p = movePieces.get(0);
-			Collections.sort(p.getValidMoves());
-			p.setMovement(p.getValidMoves().get(0));
-			m.movePiece(p);
-		}
+		System.out.println("ERROR");
+		return -1;
 	}
+
+	
+
 }
