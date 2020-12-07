@@ -1,5 +1,7 @@
 package checkers;
 
+import java.util.LinkedList;
+
 public class Piece {
 	private int x;
 	private int y;
@@ -8,6 +10,7 @@ public class Piece {
 	private boolean isKing = false;
 	private Movement movement = new Movement(this);
 	private boolean isEated = false;
+	private LinkedList<Movement> validMoves;
 	
 	public Piece(int x, int y) {
 		this.x = x; 
@@ -66,6 +69,25 @@ public class Piece {
 	public void setMovement(Movement movement) {
 		this.movement = movement;
 		movement.setPiece(this);
+	}
+
+	public void setValidMoves(LinkedList<Movement> validMoves) {
+		this.validMoves = validMoves;
+	}
+	
+	public LinkedList<Movement> getValidMoves() {
+		return validMoves;
+	}
+	
+	public boolean checkValidMoves(Piece[][] map) {
+		boolean hasMoves = false;
+		validMoves = MoveChecker.getMovements(this, map);
+		
+		if (validMoves.size() > 0) {
+			hasMoves = true;
+		}
+		
+		return hasMoves;
 	}
 
 }

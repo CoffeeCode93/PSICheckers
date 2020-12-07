@@ -11,6 +11,10 @@ public class MoveChecker {
 		
 		int type = movement.getPiece().getType();
 		boolean isKing = movement.getPiece().isKing();
+
+		if (movement.isValid()) {
+			return true;
+		}
 		
 		switch (type) {
 		case 1:
@@ -94,21 +98,27 @@ public class MoveChecker {
 						p.move(nextX, nextY);
 						
 						Movement m = new Movement(p.getMovement());
-
+						m.setPiece(p);
 						
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
-						}
+						}	
 					} else if (i == 1){
 						nextY = startY+1;
 						nextX = startX-1;
 						p.move(nextX, nextY);
 						Movement m = new Movement(p.getMovement());
-
+						m.setPiece(p);
 						
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
 						}					
 					} else if (i == 2){
@@ -116,21 +126,29 @@ public class MoveChecker {
 						nextX = startX+1;
 						p.move(nextX, nextY);
 						Movement m = new Movement(p.getMovement());
+						m.setPiece(p);
 
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
-						}					
+						}						
 					} else {
 						nextY = startY+1;
 						nextX = startX+1;
 						p.move(nextX, nextY);
 						Movement m = new Movement(p.getMovement());
+						m.setPiece(p);
 
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
-						}					
+						}						
 					}
 				}
 				
@@ -143,30 +161,41 @@ public class MoveChecker {
 						nextX = startX-1;
 						p.move(nextX, nextY);
 						Movement m = new Movement(p.getMovement());
+						m.setPiece(p);						
 						
-						
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
-						}
+						}	
 					} else if (i == 1){
 						nextY = startY+1;
 						nextX = startX-1;
 						p.move(nextX, nextY);
 						Movement m = new Movement(p.getMovement());
-						
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						m.setPiece(p);
+
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
-						}					
+						}						
 					} else if (i == 2){
 						nextY = startY+1;
 						nextX = startX+1;
 						p.move(nextX, nextY);
 						Movement m = new Movement(p.getMovement());
-						
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						m.setPiece(p);
+
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
 						}					
 					} else {
@@ -175,12 +204,15 @@ public class MoveChecker {
 						p.move(nextX, nextY);
 						p.setType(d.getType());
 						Movement m = new Movement(p.getMovement());
-
+						m.setPiece(p);
 						
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
-						}					
+						}						
 					}
 				}
 				
@@ -202,22 +234,28 @@ public class MoveChecker {
 						nextY = startY-1;
 						p.move(nextX, nextY);
 						Movement m = new Movement(p.getMovement());
-
+						m.setPiece(p);
 						
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
-						}
+						}	
 					} else {
 						nextY = startY+1;
 						p.move(nextX, nextY);
 						Movement m = new Movement(p.getMovement());
-
+						m.setPiece(p);
 						
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
-						}					
+						}						
 					}
 				}
 				
@@ -230,19 +268,26 @@ public class MoveChecker {
 						nextY = startY-1;
 						p.move(nextX, nextY);
 						Movement m = new Movement(p.getMovement());
-
+						m.setPiece(p);
 						
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
-						}
+						}	
 					} else {
 						nextY = startY+1;
 						p.move(nextX, nextY);
 						Movement m = new Movement(p.getMovement());
+						m.setPiece(p);
 						
-						boolean valid = MoveChecker.checkMovement(p.getMovement(), map);
+						boolean valid = MoveChecker.checkMovement(m, map);
 						if (valid) {
+							if (m.isEatMovement()) {
+								m.setScore(m.getScore()+5);
+							}
 							list.add(m);
 						}					
 					}
@@ -254,14 +299,16 @@ public class MoveChecker {
 				break;
 			}
 		}
-		System.out.println("Checked. Nº of valid movements: " + list.size());
-		for(Movement movenent : list)
-		System.out.println("Movement: "+movenent.getGoX()+" "+movenent.getGoY());
+		if (list.size() > 0) {
+			System.out.println("Checked valid moves. Nº of valid movements: " + list.size());
+			for(Movement movenent : list) {
+				System.out.println("\tMovement: "+movenent.getGoX()+" "+movenent.getGoY());
+			}
+		}
 		return list;
 	}
 	
 	private static boolean checkEat(Movement movement, Piece[][] map) {
-		// TODO Auto-generated method stub
 		int nx = movement.getGoX();
 		int ny = movement.getGoY();
 		int x = movement.getStartX();
@@ -337,7 +384,7 @@ public class MoveChecker {
 			
 		}
 		movement.setEatedPiece(map[nx][ny]);
-		map[nx][ny].setEated(true);
+		//map[nx][ny].setEated(true);
 		movement.setEatMovement(true);
 		return true;
 	}

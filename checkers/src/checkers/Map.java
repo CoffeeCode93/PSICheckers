@@ -4,15 +4,22 @@ import java.util.LinkedList;
 
 public class Map {
 	private LinkedList<Piece> blacks = new LinkedList<Piece>();
-	private LinkedList<IAPiece> whites = new LinkedList<IAPiece>();
+	private LinkedList<Piece> whites = new LinkedList<Piece>();
 	private int scorePlayer1 = 0;
 	private int scorePlayer2 = 0;
 	private Piece[][] map = new Piece[8][8];
-	// 1 = negras, 2 = blancas
+	// 1 = negras, 2 = blancasIA
 	
 	public Map() {
-		// TODO Auto-generated constructor stub
 		setStartPosition();
+	}
+
+	public Map(Map m) {
+		this.blacks = m.blacks;
+		this.whites = m.whites;
+		this.scorePlayer1 = m.scorePlayer1;
+		this.scorePlayer2 = m.scorePlayer2;
+		this.map = m.map;
 	}
 
 	void showMap() {
@@ -28,8 +35,8 @@ public class Map {
 			System.out.println();
 		}
 		System.out.println("    0.  1.  2.  3.  4.  5.  6.  7.\n");
-		System.out.println("Score Player 1: "+scorePlayer1);
-		System.out.println("Score Player 2: "+scorePlayer2);
+		System.out.println("Score Player 1: " + scorePlayer1);
+		System.out.println("Score Player 2: " + scorePlayer2);
 	}
 	
 	Piece getBlackPiece(int x, int y) {
@@ -41,6 +48,7 @@ public class Map {
 		}
 		return d;
 	}
+
 	Piece getWhitePiece(int x, int y) {
 		Piece d = map[x][y];
 		if (d != null) {
@@ -62,8 +70,7 @@ public class Map {
 		 if (eater.getType() == 1) {
 			scorePlayer1++;	
 			whites.remove(eaten);
-		 }
-		else {
+		 } else {
 			scorePlayer2++;
 			blacks.remove(eaten);
 		}
@@ -100,7 +107,7 @@ public class Map {
 	void setStartPosition() {
 		for (int i = 0; i < map.length; i++) {
 			if (i%2 == 0) {
-				IAPiece d = new IAPiece(0, i);
+				Piece d = new Piece(0, i);
 				map[0][i] = d;
 				d.setType(2); 
 				whites.addLast(d);
@@ -110,7 +117,7 @@ public class Map {
 
 		for (int i = 0; i < map.length; i++) {
 			if (i%2 != 0) {
-				IAPiece d = new IAPiece(1, i);
+				Piece d = new Piece(1, i);
 				map[1][i] = d;
 				d.setType(2); 
 				whites.addLast(d);
@@ -120,7 +127,7 @@ public class Map {
 		
 		for (int i = 0; i < map.length; i++) {
 			if (i%2 == 0) {
-				IAPiece d = new IAPiece(2, i);
+				Piece d = new Piece(2, i);
 				map[2][i] = d;
 				d.setType(2); 
 				whites.addLast(d);
@@ -167,11 +174,11 @@ public class Map {
 		this.blacks = blacks;
 	}
 
-	public LinkedList<IAPiece> getWhites() {
+	public LinkedList<Piece> getWhites() {
 		return whites;
 	}
 
-	public void setWhites(LinkedList<IAPiece> whites) {
+	public void setWhites(LinkedList<Piece> whites) {
 		this.whites = whites;
 	}
 

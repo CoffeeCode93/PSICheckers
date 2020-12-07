@@ -2,6 +2,7 @@ package checkers;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class Main {
@@ -14,10 +15,11 @@ public class Main {
 
 			String s = "";
 			do {
-				m.showMap();
+				//m.showMap();
 				
 				try {
 					boolean playerMoved=false;
+					/*
 					while(!playerMoved){
 						System.out.println("Select piece using 'row column'. For example: 0 1");
 						s = in.readLine().trim();
@@ -41,7 +43,13 @@ public class Main {
 							System.out.println("Wrong position. Try again!");
 						}
 					}
-					moveIA(m);
+					*/
+
+					moveIA(m, false);
+					System.out.println();
+					m.showMap();
+					moveIA(m, true);
+					System.out.println();
 					m.showMap();
 					System.out.println("Exit? [y/*]");
 					s = "";
@@ -54,13 +62,22 @@ public class Main {
 			} while (!s.equals("y"));
 	}
 	
-	private static void moveIA(Map m) {
-		// TODO Auto-generated method stub
-		LinkedList<IAPiece> iaPieces= m.getWhites();
-		System.out.println("**********************************");
-		System.out.println("Player 2 turn.\n");
-		LinkedList<IAPiece> movePieces = new LinkedList<IAPiece>();
-		for (IAPiece piece : iaPieces) {
+	private static void moveIA(Map m, boolean ia) {
+		LinkedList<Piece> iaPieces;
+		if (ia) {
+			System.out.println("\n**********************************");
+			System.out.println("          Player 2 Move!");
+			System.out.println("**********************************\n");
+			iaPieces= m.getWhites();
+		} else {
+			System.out.println("\n**********************************");
+			System.out.println("          Player 1 Move!");
+			System.out.println("**********************************\n");
+			iaPieces= m.getBlacks();
+		}
+
+		LinkedList<Piece> movePieces = new LinkedList<Piece>();
+		for (Piece piece : iaPieces) {
 			boolean hasMoves = piece.checkValidMoves(m.getMap());
 			
 			if (hasMoves) {
@@ -68,10 +85,10 @@ public class Main {
 			}
 				
 		}
-		System.out.println(movePieces.size());
 		
 		if (movePieces.size() > 0) {
-			IAPiece p = movePieces.get(0);
+			Piece p = movePieces.get(0);
+			Collections.sort(p.getValidMoves());
 			p.setMovement(p.getValidMoves().get(0));
 			m.movePiece(p);
 		}

@@ -1,6 +1,6 @@
 package checkers;
 
-public class Movement {
+public class Movement implements Comparable<Movement> {
 	
 	private int startX;
 	private int startY;
@@ -111,6 +111,17 @@ public class Movement {
 
 	public void setPiece(Piece piece) {
 		this.piece = piece;
+	}
+
+	@Override
+	public int compareTo(Movement m) {
+		if (this.score > m.score) {
+			return -1;
+		} else if (this.score < m.score) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 }
