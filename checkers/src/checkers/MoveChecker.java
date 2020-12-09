@@ -302,7 +302,11 @@ public class MoveChecker {
 		if (list.size() > 0) {
 			System.out.println("Checked valid moves. Nº of valid movements: " + list.size());
 			for(Movement movenent : list) {
-				System.out.println("\tMovement: "+movenent.getGoX()+" "+movenent.getGoY());
+				if (movenent.isEatMovement()) {
+					System.out.println("\tStart: [" + movenent.getStartX() + "," + movenent.getStartY() +"] " + "Movement: "+movenent.getGoX()+" "+movenent.getGoY()+ " - Eat Movement!");
+				} else {
+					System.out.println("\tStart: [" + movenent.getStartX() + "," + movenent.getStartY() +"] " + "Movement: "+movenent.getGoX()+" "+movenent.getGoY());
+				}
 			}
 		}
 		return list;
@@ -329,12 +333,14 @@ public class MoveChecker {
 					}
 					movement.setGoX(nx+1);
 					movement.setGoY(ny+1);
-				} else {
+				} else if (ny < y) {
 					if (map[nx+1][ny-1] != null) {
 						return false;
 					}
 					movement.setGoX(nx+1);
 					movement.setGoY(ny-1);
+				} else {
+					return false;
 				}
 			} else {
 				if (ny > y) {
@@ -343,12 +349,14 @@ public class MoveChecker {
 					}
 					movement.setGoX(nx-1);
 					movement.setGoY(ny+1);
-				} else {
+				} else if (ny < y) {
 					if (map[nx-1][ny-1] != null) {
 						return false;
 					}
 					movement.setGoX(nx-1);
 					movement.setGoY(ny-1);
+				} else {
+					return false;
 				}
 			}
 		} else {
@@ -359,12 +367,14 @@ public class MoveChecker {
 					}
 					movement.setGoX(nx-1);
 					movement.setGoY(ny+1);
-				} else {
+				} else if (ny < y) {
 					if (map[nx-1][ny-1] != null) {
 						return false;
 					}
 					movement.setGoX(nx-1);
 					movement.setGoY(ny-1);
+				} else {
+					return false;
 				}
 			} else if (type == 2) {
 				if (ny > y) {
@@ -373,12 +383,14 @@ public class MoveChecker {
 					}
 					movement.setGoX(nx+1);
 					movement.setGoY(ny+1);
-				} else {
+				} else if (ny < y) {
 					if (map[nx+1][ny-1] != null) {
 						return false;
 					}
 					movement.setGoX(nx+1);
 					movement.setGoY(ny-1);
+				} else {
+					return false;
 				}
 			}
 			

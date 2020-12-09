@@ -31,17 +31,18 @@ public class Map {
 
 	void showMap() {
 		for (int i = 0; i < map.length; i++) {
-			System.out.print(i + ". ");
+			System.out.print(i + "->");
 			for (int j = 0; j < map.length; j++) {
 				if (map[i][j] != null) {
-					System.out.print("|"+map[i][j].getType()+"| ");
+					System.out.print("|"+map[i][j].getType());
 				} else {
-					System.out.print("| | ");
+					System.out.print("| ");
 				}
 			}
-			System.out.println();
+			System.out.println("|");
 		}
-		System.out.println("    0.  1.  2.  3.  4.  5.  6.  7.\n");
+		
+		System.out.println("    0 1 2 3 4 5 6 7\n");
 		System.out.println("Score Player 1: " + scorePlayer1);
 		System.out.println("Score Player 2: " + scorePlayer2);
 	}

@@ -11,7 +11,7 @@ public class Main {
 	public static void main(String[] args) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		Map m = new Map();	
-		
+		boolean fin = false;
 		System.out.println("You are Player 1 (black)");
 
 			String s = "";
@@ -55,17 +55,33 @@ public class Main {
 					System.out.println("Exit? [y/*]");
 					s = "";
 					s = in.readLine();
+					if (s.equals("y")){
+						fin = true;
+					}
+
+					if (m.getBlacks().size() == 0 && m.getWhites().size() != 0) {
+						System.out.println("Player 2 Wins! Whites Wins!");
+						fin = true;
+					} else if (m.getBlacks().size() != 0 && m.getWhites().size() == 0) {
+						System.out.println("Player 1 Wins! Blacks Wins!");
+						fin = true;
+					}
 				} catch (IndexOutOfBoundsException e) {
 					System.out.println("Invalid movement. Out of bounds result.\n");
 				}catch(Exception e) {
 					
 				}
-			} while (!s.equals("y"));
+			} while (!s.equals("y") && !fin);
 	}
 	
 	private static void moveIA(Map m, boolean ia) {
 
-		LinkedList<Piece> iaPieces;
+		LinkedList<Piece> iaPieces = null;
+		LinkedList<Piece> movePieces = new LinkedList<Piece>();
+
+		Movement newMovement = null;
+		Piece p = null;
+
 		if (ia) {
 			System.out.println("\n**********************************");
 			System.out.println("          Player 2 Move!");
@@ -78,29 +94,40 @@ public class Main {
 			iaPieces= m.getBlacks();
 		}
 
-		LinkedList<Piece> movePieces = new LinkedList<Piece>();
 		for (Piece piece : iaPieces) {
 			boolean hasMoves = piece.checkValidMoves(m.getMap());
 			
 			if (hasMoves) {
 				movePieces.add(piece);
+
+				for (Movement movement : piece.getValidMoves()) {
+					if (movement.isEatMovement()) {
+						newMovement = movement;
+						p = piece;
+						p.setMovement(newMovement);
+					}
+				}
 			}
 				
 		}
-		
+
+
 		if (movePieces.size() > 0) {
-
-			Random rand = new Random();
-			int upperbound = movePieces.size();
-      		int random = rand.nextInt(upperbound);
-
-			Piece p = movePieces.get(random);
-			Collections.sort(p.getValidMoves());
-
-			upperbound = p.getValidMoves().size();
-      		random = rand.nextInt(upperbound);
-
-			p.setMovement(p.getValidMoves().get(random));
+			
+			if (p == null) {
+				Random rand = new Random();
+				int upperbound = movePieces.size();
+				int random = rand.nextInt(upperbound);
+				
+				p = movePieces.get(random);
+				
+							
+				Collections.sort(p.getValidMoves());
+				
+				upperbound = p.getValidMoves().size();
+				random = rand.nextInt(upperbound);
+				p.setMovement(p.getValidMoves().get(random));
+			}
 			m.movePiece(p);
 		}
 	}
