@@ -12,7 +12,12 @@ public class Main {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		Map m = new Map();	
 		boolean fin = false;
-		System.out.println("You are Player 1 (black)");
+		System.out.println("\n**********************************");
+		System.out.println("         Starting match!");
+		System.out.println("*********************************\n");
+		m.showMap();
+		System.out.println("\n       You are Player 1 (black)");
+
 
 			String s = "";
 			do {
