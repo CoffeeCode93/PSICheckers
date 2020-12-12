@@ -18,13 +18,14 @@ public class Piece {
 	}
 	
 	public Piece(Piece p) {
-		this.x = p.x;
-		this.y = p.y;
-		this.type = p.type;
-		this.isKing = p.isKing;
-		this.movement = new Movement(p.movement);
+		this.x = p.getX();
+		this.y = p.getY();
+		this.type = p.getType();
+		this.isKing = p.isKing();
+		this.movement = new Movement(p.getMovement());
 		this.movement.setPiece(this);
-		this.isEated = p.isEated;
+		this.isEated = p.isEated();
+		
 		if (p.getValidMoves() != null) {
 			this.validMoves = new LinkedList<Movement>(p.getValidMoves());			
 		} else {

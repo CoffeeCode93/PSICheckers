@@ -16,67 +16,69 @@ public class Main {
 		System.out.println("         Starting match!");
 		System.out.println("*********************************\n");
 		m.showMap();
-		System.out.println("\n       You are Player 1 (black)");
+		System.out.println("\n       You are Player 1 (blacks)");
 
-
-			String s = "";
-			do {
-				//m.showMap();
+		String s = "";
+		do {
+			try {
+				/* 	
+				boolean playerMoved=false;
 				
-				try {
-				/* 	boolean playerMoved=false;
-					
-					while(!playerMoved){
-						System.out.println("Select piece using 'row column'. For example: 0 1");
-						s = in.readLine().trim();
-						String pos[] = s.split(" ");
-						Piece d = m.getBlackPiece(Integer.parseInt(pos[0]), Integer.parseInt(pos[1]));
+				while(!playerMoved){
+					System.out.println("Select piece using 'row column'. For example: 0 1");
+					s = in.readLine().trim();
+					String pos[] = s.split(" ");
+					Piece d = m.getBlackPiece(Integer.parseInt(pos[0]), Integer.parseInt(pos[1]));
 	
-						if (d != null) {
-								System.out.println("Where to move");
-								s = "";
-								s = in.readLine().trim();
-								pos[0] = "";
-								pos[1] = "";
+					if (d != null) {
+						System.out.println("Where to move");
+						s = "";
+						s = in.readLine().trim();
+						pos[0] = "";
+						pos[1] = "";
 								
-								pos = s.split(" ");
+						pos = s.split(" ");
 								
-								d.move(Integer.parseInt(pos[0]), Integer.parseInt(pos[1]));
-								playerMoved = m.movePiece(d);
-								m.showMap();
+						d.move(Integer.parseInt(pos[0]), Integer.parseInt(pos[1]));
+						playerMoved = m.movePiece(d);
+						m.showMap();
 							
-						} else {
-							System.out.println("Wrong position. Try again!");
-						}
-					} */
-					
-
-					moveIA(m, false);
-					System.out.println();
-					m.showMap();
-					moveIA(m, true);
-					System.out.println();
-					m.showMap();
-					System.out.println("Exit? [y/*]");
-					s = "";
-					s = in.readLine();
-					if (s.equals("y")){
-						fin = true;
+					} else {
+						System.out.println("Wrong position. Try again!");
 					}
+				} 
+				*/		
 
-					if (m.getBlacks().size() == 0 && m.getWhites().size() != 0) {
-						System.out.println("Player 2 Wins! Whites Wins!");
-						fin = true;
-					} else if (m.getBlacks().size() != 0 && m.getWhites().size() == 0) {
-						System.out.println("Player 1 Wins! Blacks Wins!");
-						fin = true;
-					}
-				} catch (IndexOutOfBoundsException e) {
-					System.out.println("Invalid movement. Out of bounds result.\n");
-				}catch(Exception e) {
-					
+				moveIA(m, false);
+				System.out.println();
+				m.showMap();
+
+				moveIA(m, true);
+				System.out.println();
+				m.showMap();
+
+				System.out.println("Exit? [y/*]");
+				s = "";
+				s = in.readLine();
+
+				if (s.equals("y")){
+					fin = true;
 				}
-			} while (!s.equals("y") && !fin);
+
+				if (m.getBlacks().size() == 0 && m.getWhites().size() != 0) {
+					System.out.println("Player 2 Wins! Whites Wins!");
+					fin = true;
+				} else if (m.getBlacks().size() != 0 && m.getWhites().size() == 0) {
+					System.out.println("Player 1 Wins! Blacks Wins!");
+					fin = true;
+				}
+					
+			} catch (IndexOutOfBoundsException e) {
+				System.out.println("Invalid movement. Out of bounds result.\n");
+			}catch(Exception e) { }
+
+		} while (!s.equals("y") && !fin);
+	
 	}
 	
 	private static void moveIA(Map m, boolean ia) {
@@ -115,7 +117,6 @@ public class Main {
 			}
 				
 		}
-
 
 		if (movePieces.size() > 0) {
 			
