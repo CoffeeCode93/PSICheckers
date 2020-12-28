@@ -68,18 +68,19 @@ public class Main {
 	private final static int HUMAN = 1;
 	private static int prof;
 	private static int score;
-	private static int scoreTotal[];
+	// private static int scoreTotal[];
 
 
 	private static void moveIA(Map m, boolean ia) {
-		//Map a = new Map(m);
+		Map a = new Map(m);
 		LinkedList<Piece> iaPieces;
+		
 		if (ia) {
 			System.out.println("\n**********************************");
 			System.out.println("          Player 2 Move!");
 			System.out.println("**********************************\n");
 			iaPieces= m.getWhites();
-
+			int[] scoreTotal = new int[iaPieces.size()];
 		//else {
 		// 	System.out.println("\n**********************************");
 		// 	System.out.println("          Player 1 Move!");
@@ -89,16 +90,16 @@ public class Main {
 			System.out.println("Temos " + iaPieces.size());
 			for(int i = 0; i < iaPieces.size(); i++){
 				Map map = new Map();
-				map = m;
+				map = a;
 				boolean hasMoves = iaPieces.get(i).checkValidMoves(m.getMap());
 			
 				if (hasMoves) {
 					scoreTotal[i] = minimax(5, IA, map, iaPieces.get(i));
-					System.out.println("NON PASO POR AQUI");
 				}
 				
 			}
-			System.out.println("HOLAAAAAAAAA " + scoreTotal);
+			//Aqui teño a peza a mover pero non o movemento
+			System.out.println("Index of best score is: "+getIndexOfLargest(scoreTotal));
 		} 
 		return;
 
@@ -124,11 +125,9 @@ public class Main {
 		System.out.println(iaPiece.getValidMoves());
 		LinkedList<Movement> movePieces = iaPiece.getValidMoves();
 		if(turn == IA){
-			System.out.println("ENtramos en IA");
 			for(int i = 0; i < movePieces.size(); i++){
 				Movement movement = movePieces.get(i);
 				iaPiece.setMovement(movement);
-				System.out.println("AQUI SI");
 				m.movePiece(iaPiece);
 				if (movement.isEatMovement()){
 					score += 10;
@@ -141,6 +140,18 @@ public class Main {
 
 		System.out.println("ERROR");
 		return -1;
+	}
+
+	private static int getIndexOfLargest( int[] array )
+	{
+	if ( array == null || array.length == 0 ) return -1; // null or empty
+
+	int largest = 0;
+	for ( int i = 1; i < array.length; i++ )
+	{
+		if ( array[i] > array[largest] ) largest = i;
+	}
+	return largest; // position of the first largest found
 	}
 
 	
