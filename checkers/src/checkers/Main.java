@@ -72,7 +72,7 @@ public class Main {
 
 
 	private static void moveIA(Map m, boolean ia) {
-		Map a = new Map(m);
+		//Map a = new Map(m);
 		LinkedList<Piece> iaPieces;
 		if (ia) {
 			System.out.println("\n**********************************");
@@ -90,8 +90,13 @@ public class Main {
 			for(int i = 0; i < iaPieces.size(); i++){
 				Map map = new Map();
 				map = m;
-				scoreTotal[i] = minimax(5, IA, map, iaPieces.get(i));
-				System.out.println("PASO POR AQUI");
+				boolean hasMoves = iaPieces.get(i).checkValidMoves(m.getMap());
+			
+				if (hasMoves) {
+					scoreTotal[i] = minimax(5, IA, map, iaPieces.get(i));
+					System.out.println("NON PASO POR AQUI");
+				}
+				
 			}
 			System.out.println("HOLAAAAAAAAA " + scoreTotal);
 		} 
@@ -116,11 +121,14 @@ public class Main {
 	}
 
 	private static int minimax(int depth, int turn, Map m, Piece iaPiece){
+		System.out.println(iaPiece.getValidMoves());
 		LinkedList<Movement> movePieces = iaPiece.getValidMoves();
 		if(turn == IA){
+			System.out.println("ENtramos en IA");
 			for(int i = 0; i < movePieces.size(); i++){
 				Movement movement = movePieces.get(i);
 				iaPiece.setMovement(movement);
+				System.out.println("AQUI SI");
 				m.movePiece(iaPiece);
 				if (movement.isEatMovement()){
 					score += 10;
