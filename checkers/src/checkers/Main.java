@@ -81,24 +81,17 @@ public class Main {
 			System.out.println("          Player 2 Move!");
 			System.out.println("**********************************\n");
 			iaPieces= m.getWhites();
-			//int[] scoreTotal = new int[iaPieces.size()];
+
 			HashMap<Piece, Map.Entry<Movement, Integer>> scoreTotal = new HashMap<>();
-		//else {
-		// 	System.out.println("\n**********************************");
-		// 	System.out.println("          Player 1 Move!");
-		// 	System.out.println("**********************************\n");
-		// 	iaPieces= m.getBlacks();
-		// }
-			System.out.println("Temos " + iaPieces.size());
+
 			for(int i = 0; i < iaPieces.size(); i++){
 				Mapa map = new Mapa(m);
-				//map = a;
+
 				boolean hasMoves = iaPieces.get(i).checkValidMoves(m.getMap());
 			
 				if (hasMoves) {
 					Map.Entry<Movement, Integer> move = minimax(5, IA, map, iaPieces.get(i));
 					if (move != null){
-						System.out.println(move.getKey()+" => " +move.getValue());
 						scoreTotal.put(iaPieces.get(i), move);
 					}
 				}
@@ -114,6 +107,9 @@ public class Main {
 				}
 			}
 			maxEntry.getKey().setMovement(maxEntry.getValue().getKey());
+			System.out.println("[IA Movement] FROM:"+maxEntry.getKey().getX() + " - "+ maxEntry.getKey().getY());
+			System.out.println("[IA Movement] TO:"+maxEntry.getKey().getMovement().getGoX() + " - "+ maxEntry.getKey().getMovement().getGoY());
+			System.out.println("[IA Movement] SCORE: " + maxEntry.getValue().getValue());
 			m.movePiece(maxEntry.getKey());
 			//Aqui teño a peza a mover pero non o movemento
 			//System.out.println("Index of best score is: "+getIndexOfLargest(scoreTotal));
@@ -138,8 +134,9 @@ public class Main {
 		//}
 	}
 
-	private static Map.Entry<Movement, Integer> minimax(int depth, int turn, Mapa m, Piece iaPiece){
-		System.out.println(iaPiece.getValidMoves());
+	private static Map.Entry<Movement, Integer> minimax(int depth, int turn, Mapa m, Piece piece){
+		Piece iaPiece = new Piece(piece);
+		//System.out.println(iaPiece.getValidMoves());
 		LinkedList<Movement> movePieces = iaPiece.getValidMoves();
 		HashMap<Movement,Integer> movementScored= new HashMap<>();
 		if(turn == IA){
@@ -149,10 +146,31 @@ public class Main {
 				iaPiece.setMovement(movement);
 				m.movePiece(iaPiece);
 				//TODO darlle os valores de verdade para o score
+
+				//Puntuación laterales (non poden comer)
+				if (movement.getGoY() == 0 || movement.getGoY() == 7){
+					score += 4;
+				}
+				if (movement.getGoY() == 1 || movement.getGoY() == 6){
+					score += 3;
+				}
+				if (movement.getGoY() == 2 || movement.getGoY() == 5){
+					score += 2;
+				}
+				if (movement.getGoY() == 3 || movement.getGoY() == 4){
+					score += 1;
+				}
+				//Puntuación coronar
+				if (movement.getGoX() == 7) {
+					//si xa e dama como o lateral
+					if(iaPiece.isKing()){
+						score += 4;
+					} else {
+						score += 6;
+					}
+				}
 				if (movement.isEatMovement()){
 					score += 10;
-				} else {
-					score += 1;
 				}
 				movementScored.put(movement, score);
 			}
