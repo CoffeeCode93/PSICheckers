@@ -69,7 +69,6 @@ public class Main {
 	private final static int HUMAN = 1;
 	private static int prof;
 	private static int score;
-	private static Movement move;
 	// private static int scoreTotal[];
 
 
@@ -157,8 +156,8 @@ public class Main {
 				}
 				movementScored.put(movement, score);
 			}
-			Map.Entry<Movement, Integer> maxEntry = null;
 
+			Map.Entry<Movement, Integer> maxEntry = null;
 			for (Map.Entry<Movement, Integer> entry : movementScored.entrySet())
 			{
 				if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0)
@@ -168,25 +167,7 @@ public class Main {
 			}
 			return maxEntry;
 		}
-
 		System.out.println("ERROR");
 		return null;
 	}
-
-
-
-	private static int getIndexOfLargest( int[] array )
-	{
-	if ( array == null || array.length == 0 ) return -1; // null or empty
-
-	int largest = 0;
-	for ( int i = 1; i < array.length; i++ )
-	{
-		if ( array[i] > array[largest] ) largest = i;
-	}
-	return largest; // position of the first largest found
-	}
-
-	
-
 }
