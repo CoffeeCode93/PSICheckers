@@ -6,12 +6,14 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
 
 	public static void main(String[] args) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		Map m = new Map();	
+		Mapa m = new Mapa();	
 		
 		System.out.println("You are Player 1 (black)");
 
@@ -51,7 +53,6 @@ public class Main {
 					// System.out.println();
 					//m.showMap();
 					moveIA(m, true);
-					System.out.println("devolveme IA");
 					m.showMap();
 					System.out.println("Exit? [y/*]");
 					s = "";
@@ -68,11 +69,12 @@ public class Main {
 	private final static int HUMAN = 1;
 	private static int prof;
 	private static int score;
+	private static Movement move;
 	// private static int scoreTotal[];
 
 
-	private static void moveIA(Map m, boolean ia) {
-		Map a = new Map(m);
+	private static void moveIA(Mapa m, boolean ia) {
+		//Mapa a = new Mapa(m);
 		LinkedList<Piece> iaPieces;
 		
 		if (ia) {
@@ -80,7 +82,8 @@ public class Main {
 			System.out.println("          Player 2 Move!");
 			System.out.println("**********************************\n");
 			iaPieces= m.getWhites();
-			int[] scoreTotal = new int[iaPieces.size()];
+			//int[] scoreTotal = new int[iaPieces.size()];
+			HashMap<Piece, Map.Entry<Movement, Integer>> scoreTotal = new HashMap<>();
 		//else {
 		// 	System.out.println("\n**********************************");
 		// 	System.out.println("          Player 1 Move!");
@@ -89,17 +92,32 @@ public class Main {
 		// }
 			System.out.println("Temos " + iaPieces.size());
 			for(int i = 0; i < iaPieces.size(); i++){
-				Map map = new Map();
-				map = a;
+				Mapa map = new Mapa(m);
+				//map = a;
 				boolean hasMoves = iaPieces.get(i).checkValidMoves(m.getMap());
 			
 				if (hasMoves) {
-					scoreTotal[i] = minimax(5, IA, map, iaPieces.get(i));
+					Map.Entry<Movement, Integer> move = minimax(5, IA, map, iaPieces.get(i));
+					if (move != null){
+						System.out.println(move.getKey()+" => " +move.getValue());
+						scoreTotal.put(iaPieces.get(i), move);
+					}
 				}
 				
 			}
+			Map.Entry<Piece, Map.Entry<Movement, Integer>> maxEntry = null;
+
+			for (Map.Entry<Piece, Map.Entry<Movement, Integer>> entry : scoreTotal.entrySet())
+			{
+				if (maxEntry == null || entry.getValue().getValue().compareTo(maxEntry.getValue().getValue()) > 0)
+				{
+					maxEntry = entry;
+				}
+			}
+			maxEntry.getKey().setMovement(maxEntry.getValue().getKey());
+			m.movePiece(maxEntry.getKey());
 			//Aqui teño a peza a mover pero non o movemento
-			System.out.println("Index of best score is: "+getIndexOfLargest(scoreTotal));
+			//System.out.println("Index of best score is: "+getIndexOfLargest(scoreTotal));
 		} 
 		return;
 
@@ -121,26 +139,41 @@ public class Main {
 		//}
 	}
 
-	private static int minimax(int depth, int turn, Map m, Piece iaPiece){
+	private static Map.Entry<Movement, Integer> minimax(int depth, int turn, Mapa m, Piece iaPiece){
 		System.out.println(iaPiece.getValidMoves());
 		LinkedList<Movement> movePieces = iaPiece.getValidMoves();
+		HashMap<Movement,Integer> movementScored= new HashMap<>();
 		if(turn == IA){
 			for(int i = 0; i < movePieces.size(); i++){
+				score = 0;
 				Movement movement = movePieces.get(i);
 				iaPiece.setMovement(movement);
 				m.movePiece(iaPiece);
+				//TODO darlle os valores de verdade para o score
 				if (movement.isEatMovement()){
 					score += 10;
 				} else {
 					score += 1;
 				}
+				movementScored.put(movement, score);
 			}
-			return score;
+			Map.Entry<Movement, Integer> maxEntry = null;
+
+			for (Map.Entry<Movement, Integer> entry : movementScored.entrySet())
+			{
+				if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0)
+				{
+					maxEntry = entry;
+				}
+			}
+			return maxEntry;
 		}
 
 		System.out.println("ERROR");
-		return -1;
+		return null;
 	}
+
+
 
 	private static int getIndexOfLargest( int[] array )
 	{

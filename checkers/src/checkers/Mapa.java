@@ -2,7 +2,7 @@ package checkers;
 
 import java.util.LinkedList;
 
-public class Map {
+public class Mapa {
 	private LinkedList<Piece> blacks = new LinkedList<Piece>();
 	private LinkedList<Piece> whites = new LinkedList<Piece>();
 	private int scorePlayer1 = 0;
@@ -10,11 +10,11 @@ public class Map {
 	private Piece[][] map = new Piece[8][8];
 	// 1 = negras, 2 = blancasIA
 	
-	public Map() {
+	public Mapa() {
 		setStartPosition();
 	}
 
-	public Map(Map m) {
+	public Mapa(Mapa m) {
 		this.blacks = new LinkedList<Piece>(m.blacks);
 		this.whites = new LinkedList<Piece>(m.whites);
 		this.scorePlayer1 = m.scorePlayer1;
