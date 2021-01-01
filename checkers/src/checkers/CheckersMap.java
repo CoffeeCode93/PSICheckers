@@ -68,10 +68,10 @@ public class CheckersMap {
 	}
 	
 	void eatPiece(Piece eaten, Piece eater) {
-		for (int i = 0; i < map[0].length; i++)
-			for (int j= 0; j < map[1].length; j++) 
+		for (int i = 0; i < map.length; i++)
+			for (int j= 0; j < map.length; j++) 
 		        if(map[i][j] == eaten) {
-		        	map[i][j] = null;		        			
+					map[i][j] = null;		
 		        }
 		
 		 

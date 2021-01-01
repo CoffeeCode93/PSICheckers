@@ -113,4 +113,10 @@ public class Piece implements Comparable<Piece>{
 		return 0;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Piece on: " + x + "-" + y;
+	}
+
 }
