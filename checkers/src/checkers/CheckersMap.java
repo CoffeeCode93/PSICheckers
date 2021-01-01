@@ -2,7 +2,7 @@ package checkers;
 
 import java.util.LinkedList;
 
-public class Map {
+public class CheckersMap {
 	private LinkedList<Piece> blacks = new LinkedList<Piece>();
 	private LinkedList<Piece> whites = new LinkedList<Piece>();
 	private int scorePlayer1 = 0;
@@ -10,19 +10,19 @@ public class Map {
 	private Piece[][] map = new Piece[8][8];
 	// 1 = negras, 2 = blancasIA
 	
-	public Map() {
+	public CheckersMap() {
 		setStartPosition();
 	}
 
-	public Map(Map m) {
-		this.blacks = new LinkedList<Piece>(m.getBlacks());
-		this.whites = new LinkedList<Piece>(m.getWhites());
-		this.scorePlayer1 = m.getScorePlayer1();
-		this.scorePlayer2 = m.getScorePlayer2();
+	public CheckersMap(CheckersMap m) {
+		this.blacks = new LinkedList<Piece>(m.blacks);
+		this.whites = new LinkedList<Piece>(m.whites);
+		this.scorePlayer1 = m.scorePlayer1;
+		this.scorePlayer2 = m.scorePlayer2;
 		
 		for (int  i = 0; i < 8; i++) {
 			for(int j = 0; j < 8 ; j++) {
-				if (m.getMap()[i][j] != null) {
+				if (m.map[i][j] != null) {
 					this.map[i][j] = new Piece(m.getMap()[i][j]);
 				}
 			}
@@ -66,22 +66,6 @@ public class Map {
 		}
 		return d;
 	}
-
-	public int getScorePlayer1() {
-		return scorePlayer1;
-	}
-
-	public void setScorePlayer1(int scorePlayer1) {
-		this.scorePlayer1 = scorePlayer1;
-	}
-
-	public int getScorePlayer2() {
-		return scorePlayer2;
-	}
-
-	public void setScorePlayer2(int scorePlayer2) {
-		this.scorePlayer2 = scorePlayer2;
-	}
 	
 	void eatPiece(Piece eaten, Piece eater) {
 		for (int i = 0; i < map[0].length; i++)
@@ -103,12 +87,10 @@ public class Map {
 	boolean movePiece(Piece d) {
 		int x = d.getX();		
 		int y = d.getY();
-		int nx = d.getMovement().getGoX();
-		int ny = d.getMovement().getGoY();
-
 		
 		if (MoveChecker.checkMovement(d.getMovement(), map)) {
-			System.out.println("\n-> Map will move a piece from: [" + x + "," + y + "] to: [" + nx + "," + ny + "]");
+			int nx = d.getMovement().getGoX();
+			int ny = d.getMovement().getGoY();
 			map[x][y] = null;
 			map[nx][ny] = d;
 			

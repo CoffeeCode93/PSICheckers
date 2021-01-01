@@ -2,7 +2,7 @@ package checkers;
 
 import java.util.LinkedList;
 
-public class Piece {
+public class Piece implements Comparable<Piece>{
 	private int x;
 	private int y;
 	
@@ -18,14 +18,13 @@ public class Piece {
 	}
 	
 	public Piece(Piece p) {
-		this.x = p.getX();
-		this.y = p.getY();
-		this.type = p.getType();
-		this.isKing = p.isKing();
-		this.movement = new Movement(p.getMovement());
+		this.x = p.x;
+		this.y = p.y;
+		this.type = p.type;
+		this.isKing = p.isKing;
+		this.movement = new Movement(p.movement);
 		this.movement.setPiece(this);
-		this.isEated = p.isEated();
-		
+		this.isEated = p.isEated;
 		if (p.getValidMoves() != null) {
 			this.validMoves = new LinkedList<Movement>(p.getValidMoves());			
 		} else {
@@ -104,6 +103,14 @@ public class Piece {
 		}
 		
 		return hasMoves;
+	}
+
+	/* Only use when the piece has movements. The list of movements must be sorted */
+	@Override
+	public int compareTo(Piece p) {
+		if (this.validMoves.getFirst().getScore() > p.getValidMoves().getFirst().getScore()) return -1;
+		if (this.validMoves.getFirst().getScore() < p.getValidMoves().getFirst().getScore()) return 1;
+		return 0;
 	}
 
 }

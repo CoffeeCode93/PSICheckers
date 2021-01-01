@@ -29,14 +29,14 @@ public class Movement implements Comparable<Movement> {
 	}
 	
 	public Movement(Movement movement) {
-		this.startX = movement.getStartX();
-		this.startY = movement.getStartY();
-		this.goX = movement.getGoX();
-		this.goY = movement.getGoY();
-		this.score = movement.getScore();
-		this.valid = movement.isValid();
-		this.eatMovement = movement.isEatMovement();
-		this.eatedPiece = movement.getEatedPiece();
+		this.startX = movement.startX;
+		this.startY = movement.startY;
+		this.goX = movement.goX;
+		this.goY = movement.goY;
+		this.score = movement.score;
+		this.valid = movement.valid;
+		this.eatMovement = movement.eatMovement;
+		this.eatedPiece = movement.eatedPiece;
 		this.piece = null;
 	}
 
@@ -122,6 +122,12 @@ public class Movement implements Comparable<Movement> {
 		} else {
 			return 0;
 		}
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "From: " + this.piece.getX() + "-" + this.piece.getY() + " To: " + this.goX + "-" + this.goY + " Score: " + this.score;
 	}
 
 }
