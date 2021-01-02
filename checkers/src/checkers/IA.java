@@ -135,7 +135,6 @@ public class IA {
     }
 
     public static void minimax(int depth, Boolean ia, CheckersMap m, Piece piece) {
-        System.out.println("PROFUNDIDAD ACTUAL: " + depth);
         if (depth == 0){
             return;
         }
@@ -147,10 +146,11 @@ public class IA {
             for (int i = 0; i < movePieces.size(); i++) {
                 Movement movement = new Movement(movePieces.get(i));
                 iaPiece.setMovement(movement);
+                int score = Score(true, movement, iaPiece);
+                movement.setScore(score);
                 iaMap.movePiece(iaPiece);
-                int score = Score(true, movement, piece);
-                movePieces.get(i).setScore(score);
-                minimax( depth -1, false, iaMap, piece);
+                minimax( depth -1, false, iaMap, iaPiece);
+                movePieces.get(i).setScore(iaPiece.getMovement().getScore());
             }
 
         } else {
@@ -165,17 +165,17 @@ public class IA {
                     CheckersMap pl2Map = new CheckersMap(plMap);
                     Piece piece2move = new Piece(plPiece);
                     piece2move.setMovement(plMoves.get(j));
+                    plMoves.get(j).setScore(Score(false, plMoves.get(j), piece2move));
                     pl2Map.movePiece(piece2move);
-                    plMoves.get(j).setScore(Score(false, plMoves.get(j), piece));
                 }
                 Collections.sort(plMoves);
                 Collections.reverse(plMoves);
                 Scores[i]=plMoves.getFirst().getScore();
             }
-            System.out.println("PEZA CON SCORE: " + piece.getMovement().getScore());
+            System.out.println("PEZA TRAE SCORE: " + piece.getMovement().getScore());
             piece.getMovement().setScore(piece.getMovement().getScore() + getMinValue(Scores));
             System.out.println("SCORE MAIS BAIXO DE HUMANO: " + getMinValue(Scores));
-            System.out.println("PEZA CON SCORE: " + piece.getMovement().getScore());
+            System.out.println("SCORE FINAL: " + piece.getMovement().getScore());
             // LinkedList<Movement> movePieces = plPiece.getValidMoves();
 
             // for (int i = 0; i < movePieces.size(); i++) {
@@ -188,7 +188,6 @@ public class IA {
             // }
 
         }
-        System.out.println(piece.getMovement().getScore());
         return;
     }
 
@@ -231,6 +230,7 @@ public class IA {
             if (movement.isEatMovement()) {
                 score += 10;
             }
+            System.out.println("DEVOLVE SCORE IA => " + score);
             return score;
 
         } else {
@@ -259,6 +259,7 @@ public class IA {
             if (movement.isEatMovement()) {
                 score -= 10;
             }
+            System.out.println("DEVOLVE SCORE HUMANO => " + score +"da peza " + piece.toString()+" con movemento: " + movement.toString());
             return score;
         }
     }
