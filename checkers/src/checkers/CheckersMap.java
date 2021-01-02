@@ -15,8 +15,8 @@ public class CheckersMap {
 	}
 
 	public CheckersMap(CheckersMap m) {
-		this.blacks = new LinkedList<Piece>(m.blacks);
-		this.whites = new LinkedList<Piece>(m.whites);
+		this.blacks = new LinkedList<Piece>();
+		this.whites = new LinkedList<Piece>();
 		this.scorePlayer1 = m.scorePlayer1;
 		this.scorePlayer2 = m.scorePlayer2;
 		
@@ -24,6 +24,8 @@ public class CheckersMap {
 			for(int j = 0; j < 8 ; j++) {
 				if (m.map[i][j] != null) {
 					this.map[i][j] = new Piece(m.getMap()[i][j]);
+					if (this.map[i][j].getType() == 2) this.whites.add(this.map[i][j]);
+					else blacks.add(this.map[i][j]);
 				}
 			}
 		}
@@ -113,11 +115,13 @@ public class CheckersMap {
 	}
 	
 	void setStartPosition() {
+		int id = 0;
 		for (int i = 0; i < map.length; i++) {
 			if (i%2 == 0) {
 				Piece d = new Piece(0, i);
 				map[0][i] = d;
-				d.setType(2); 
+				d.setType(2);
+				d.setId(id++); 
 				whites.addLast(d);
 			}
 				
@@ -128,6 +132,7 @@ public class CheckersMap {
 				Piece d = new Piece(1, i);
 				map[1][i] = d;
 				d.setType(2); 
+				d.setId(id++); 
 				whites.addLast(d);
 
 			}
@@ -138,9 +143,8 @@ public class CheckersMap {
 				Piece d = new Piece(2, i);
 				map[2][i] = d;
 				d.setType(2); 
+				d.setId(id++); 
 				whites.addLast(d);
-
-
 			}
 		}
 		
@@ -150,6 +154,7 @@ public class CheckersMap {
 				Piece d = new Piece(5, i);
 				map[5][i] = d;
 				d.setType(1); 
+				d.setId(id++); 
 				blacks.addLast(d);
 				
 			}
@@ -159,7 +164,8 @@ public class CheckersMap {
 			if (i%2 == 0) {
 				Piece d = new Piece(6, i);
 				map[6][i] = d;			
-				d.setType(1); 
+				d.setType(1);
+				d.setId(id++);  
 				blacks.addLast(d);
 			}
 		}
@@ -169,6 +175,7 @@ public class CheckersMap {
 				Piece d = new Piece(7, i);
 				map[7][i] = d;
 				d.setType(1); 
+				d.setId(id++); 
 				blacks.addLast(d);
 			}
 		}			

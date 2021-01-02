@@ -4,60 +4,143 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 public class IA {
-    private final static int IA = 0;
-	private final static int HUMAN = 1;
+    private static LinkedList<Piece> iaPieces;
+    private static LinkedList<Piece> playerPieces;
+    private static CheckersMap realMap;
+    private static CheckersMap copyMap;
+
+    public static void setupIA(CheckersMap map) {
+        copyMap = new CheckersMap(map);
+        realMap = map;
+        iaPieces = copyMap.getWhites();
+        playerPieces = copyMap.getBlacks();
+    }
 
     public static void moveIA(CheckersMap m, boolean ia, int depth) {
-        LinkedList<Piece> iaPieces;
+        setupIA(m);
 		
 		if (ia) {
 			System.out.println("\n**********************************");
 			System.out.println("          Player 2 Move!");
 			System.out.println("**********************************");
-			iaPieces = m.getWhites();
 		} else {
-			iaPieces = m.getBlacks();
+            System.out.println("\n**********************************");
+			System.out.println("          Player 1 Move!");
+			System.out.println("**********************************");
         }
+       
+        System.out.println("-------- IA MinMax --------");
+        LinkedList<Piece> iaValidPieces = getValidPieces(iaPieces, copyMap);
+        System.out.println("\n-------- PLAYER MinMax --------");
+        LinkedList<Piece> plValidPieces = getValidPieces(playerPieces, copyMap);
 
-        LinkedList<Piece> validPieces = new LinkedList<Piece>();
-
-        for(int i = 0; i < iaPieces.size(); i++){
-            CheckersMap map = new CheckersMap(m);
-
-            System.out.println("\n-> Check movements of the real piece. [" + iaPieces.get(i).getX() + "," + iaPieces.get(i).getY() + "]");
-            boolean hasMoves = iaPieces.get(i).checkValidMoves(m.getMap());
-            
-            if (hasMoves) {
-                validPieces.add(iaPieces.get(i));
-                minimax(depth, ia, map, iaPieces.get(i));
-                
-                Collections.sort(iaPieces.get(i).getValidMoves());
-            }
+        for (Piece piece : iaValidPieces) {
+            minimax(depth, true, m, piece);
+            Collections.sort(piece.getValidMoves());
         }
-        Collections.sort(validPieces);
+        Collections.sort(iaValidPieces);
 
-        System.out.println("\nShowing the list of pieces with their moves");
-        for (Piece piece : validPieces) {
+        for (Piece piece : plValidPieces) {
+            minimax(depth, false, m, piece);
+            Collections.sort(piece.getValidMoves());
+        }
+        Collections.sort(plValidPieces);
+
+        System.out.println("\nShowing the list of pieces of the IA with their moves");
+        for (Piece piece : iaValidPieces) {
             System.out.println("Piece on: " + piece.getX() + "-" + piece.getY());
             for (Movement move : piece.getValidMoves()) {
                 System.out.println("\t" + move.toString());
             }
         }
 
-        Piece bestPiece = validPieces.getFirst();
-        Movement bestMovement = bestPiece.getValidMoves().getFirst();
-        bestPiece.setMovement(bestMovement);
+        System.out.println("\nShowing the list of pieces of the PLAYER with their moves");
+        for (Piece piece : plValidPieces) {
+            System.out.println("Piece on: " + piece.getX() + "-" + piece.getY());
+            for (Movement move : piece.getValidMoves()) {
+                System.out.println("\t" + move.toString());
+            }
+        }
 
-        System.out.println("\n[IA Movement] SCORE: " + bestMovement.getScore());
-        System.out.println("[IA Movement] FROM: " + bestPiece.getX() + "-"+ bestPiece.getY());
-        System.out.println("[IA Movement] TO: " + bestPiece.getMovement().getGoX() + "-"+ bestPiece.getMovement().getGoY());
-        System.out.println("[IA Movement] EAT: " + bestMovement.isEatMovement() + "\n");
-        m.movePiece(bestPiece);
+        // Get the real piece by ID the copy constructor creates new objects
+        Piece bestIAPiece = getRealPiece(iaValidPieces.getFirst());
+        Movement bestIAMovement = iaValidPieces.getFirst().getValidMoves().getFirst();
+        bestIAPiece.setMovement(bestIAMovement);
+        // If the movement eats we need to set also the real piece to eat
+        if (bestIAMovement.isEatMovement()) {
+            bestIAMovement.setEatedPiece(getRealPiece(bestIAMovement.getEatedPiece()));
+        }
+        
+        Piece bestPlPiece = getRealPiece(plValidPieces.getFirst());
+        Movement bestPlMovement = plValidPieces.getFirst().getValidMoves().getFirst();
+        bestPlPiece.setMovement(bestPlMovement);
+        if (bestPlMovement.isEatMovement()) {
+            bestPlMovement.setEatedPiece(getRealPiece(bestPlMovement.getEatedPiece()));
+        }
+
+        System.out.println("\n[IA Movement] SCORE: " + bestIAMovement.getScore());
+        System.out.println("[IA Movement] FROM: " + bestIAPiece.getX() + "-"+ bestIAPiece.getY());
+        System.out.println("[IA Movement] TO: " + bestIAPiece.getMovement().getGoX() + "-"+ bestIAPiece.getMovement().getGoY());
+        System.out.println("[IA Movement] EAT: " + bestIAMovement.isEatMovement() + "\n");
+
+        System.out.println("[PL Movement] SCORE: " + bestPlMovement.getScore());
+        System.out.println("[PL Movement] FROM: " + bestPlPiece.getX() + "-"+ bestPlPiece.getY());
+        System.out.println("[PL Movement] TO: " + bestPlPiece.getMovement().getGoX() + "-"+ bestPlPiece.getMovement().getGoY());
+        System.out.println("[PL Movement] EAT: " + bestPlMovement.isEatMovement() + "\n");
+        
+        if (depth > 1) {
+            // Move on the copy map
+            // The player also move a piece
+            // Repeat the process with depth = depth-1
+            // The parent move should store the score of his branch
+        } else {
+            // Get best parent movement
+            // Move on the real map
+        }
+
+        iaValidPieces.getFirst().setMovement(iaValidPieces.getFirst().getValidMoves().getFirst());
+        copyMap.movePiece(iaValidPieces.getFirst());
+        realMap.movePiece(bestIAPiece);
 
 		return;
-	}
+    }
     
-	public static void minimax(int depth, Boolean ia, CheckersMap m, Piece piece) {		
+    private static LinkedList<Piece> getValidPieces(LinkedList<Piece> pieces, CheckersMap m) {
+        LinkedList<Piece> validPieces = new LinkedList<Piece>();
+
+        for(int i = 0; i < pieces.size(); i++){
+            boolean hasMoves = pieces.get(i).checkValidMoves(m.getMap());
+            
+            if (hasMoves) {
+                System.out.println("Checked valid moves for " + pieces.get(i).toString() + ". Nº of valid movements: " + pieces.get(i).getValidMoves().size());
+                for(Movement movenent : pieces.get(i).getValidMoves()) {
+                    System.out.println("\tMovement: "+movenent.getGoX()+" "+movenent.getGoY());
+                }
+                
+                validPieces.add(pieces.get(i));
+            }
+        }
+
+        return validPieces;
+    }
+    
+	private static Piece getRealPiece(Piece copyPiece) {
+        for (Piece p : realMap.getWhites()) {
+            if (p.getId() == copyPiece.getId()) {
+                return p;
+            }
+        }
+
+        for (Piece p : realMap.getBlacks()) {
+            if (p.getId() == copyPiece.getId()) {
+                return p;
+            }
+        }
+
+        return null;
+    }
+
+    public static void minimax(int depth, Boolean ia, CheckersMap m, Piece piece) {
 		Piece iaPiece = new Piece(piece);
 		LinkedList<Movement> movePieces = iaPiece.getValidMoves();
 
@@ -92,27 +175,7 @@ public class IA {
                 score += 10;
             }
             
-            movement.setScore(score);
-
-            int depthScore = 0;
-            if (depth > 1) {
-                m.movePiece(iaPiece);
-                // Need to move a piece of the player
-                
-                Piece depthPiece = new Piece(iaPiece);
-                System.out.println("--> Check submovements for an iaPiece on: " + movement.getPiece().getX() + "-" + movement.getPiece().getY());
-
-                boolean hasMoves = depthPiece.checkValidMoves(m.getMap());
-                if (hasMoves) {
-                    minimax(depth-1, ia, m, depthPiece);
-
-                    for (Movement move : depthPiece.getValidMoves()) {
-                        depthScore += move.getScore();
-                    }
-                }
-            }
-
-            movePieces.get(i).setScore(score+depthScore);
+            movePieces.get(i).setScore(score);
         }
 
 		return;

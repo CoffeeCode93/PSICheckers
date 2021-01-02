@@ -42,7 +42,7 @@ public class Main {
 						}
 					}
 					
-					IA.moveIA(m, true, 2);
+					IA.moveIA(m, true, 1);
 					m.showMap();
 					System.out.println("Exit? [y/*]");
 					s = "";

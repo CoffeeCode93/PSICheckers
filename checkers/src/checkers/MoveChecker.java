@@ -300,12 +300,6 @@ public class MoveChecker {
 			}
 		}
 
-		if (list.size() > 0) {
-			System.out.println("Checked valid moves. Nº of valid movements: " + list.size());
-			for(Movement movenent : list) {
-				System.out.println("\tMovement: "+movenent.getGoX()+" "+movenent.getGoY());
-			}
-		}
 		return list;
 	}
 	

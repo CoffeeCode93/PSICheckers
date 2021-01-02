@@ -6,6 +6,7 @@ public class Piece implements Comparable<Piece>{
 	private int x;
 	private int y;
 	
+	private int id = 0;
 	private int type = 0;
 	private boolean isKing = false;
 	private Movement movement = new Movement(this);
@@ -20,6 +21,7 @@ public class Piece implements Comparable<Piece>{
 	public Piece(Piece p) {
 		this.x = p.x;
 		this.y = p.y;
+		this.id = p.id;
 		this.type = p.type;
 		this.isKing = p.isKing;
 		this.movement = new Movement(p.movement);
@@ -37,6 +39,14 @@ public class Piece implements Comparable<Piece>{
 		return;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public boolean isEated() {
 		return isEated;
 	}
@@ -115,7 +125,6 @@ public class Piece implements Comparable<Piece>{
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "Piece on: " + x + "-" + y;
 	}
 
