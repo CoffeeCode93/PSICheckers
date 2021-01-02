@@ -31,21 +31,12 @@ public class IA {
 
         System.out.println("-------- IA MinMax --------");
         LinkedList<Piece> iaValidPieces = getValidPieces(iaPieces, copyMap);
-        // System.out.println("\n-------- PLAYER MinMax --------");
-        // LinkedList<Piece> plValidPieces = getValidPieces(playerPieces, copyMap);
 
         for (Piece piece : iaValidPieces) {
             minimax(depth, true, m, piece);
             Collections.sort(piece.getValidMoves());
         }
         Collections.sort(iaValidPieces);
-
-        // for (Piece piece : plValidPieces) {
-        //     minimax(depth, false, m, piece);
-        //     Collections.sort(piece.getValidMoves());
-        // }
-        // Collections.sort(plValidPieces);
-        // Collections.reverse(plValidPieces);
 
         System.out.println("\nShowing the list of pieces of the IA with their moves");
         for (Piece piece : iaValidPieces) {
@@ -54,14 +45,6 @@ public class IA {
                 System.out.println("\t" + move.toString());
             }
         }
-
-        // System.out.println("\nShowing the list of pieces of the PLAYER with their moves");
-        // for (Piece piece : plValidPieces) {
-        //     System.out.println("Piece on: " + piece.getX() + "-" + piece.getY());
-        //     for (Movement move : piece.getValidMoves()) {
-        //         System.out.println("\t" + move.toString());
-        //     }
-        // }
 
         // Get the real piece by ID the copy constructor creates new objects
         Piece bestIAPiece = getRealPiece(iaValidPieces.getFirst());
@@ -72,24 +55,11 @@ public class IA {
             bestIAMovement.setEatedPiece(getRealPiece(bestIAMovement.getEatedPiece()));
         }
 
-        // Piece bestPlPiece = getRealPiece(plValidPieces.getFirst());
-        // Movement bestPlMovement = plValidPieces.getFirst().getValidMoves().getFirst();
-        // bestPlPiece.setMovement(bestPlMovement);
-        // if (bestPlMovement.isEatMovement()) {
-        //     bestPlMovement.setEatedPiece(getRealPiece(bestPlMovement.getEatedPiece()));
-        // }
-
         System.out.println("\n[IA Movement] SCORE: " + bestIAMovement.getScore());
         System.out.println("[IA Movement] FROM: " + bestIAPiece.getX() + "-" + bestIAPiece.getY());
         System.out.println(
                 "[IA Movement] TO: " + bestIAPiece.getMovement().getGoX() + "-" + bestIAPiece.getMovement().getGoY());
         System.out.println("[IA Movement] EAT: " + bestIAMovement.isEatMovement() + "\n");
-
-        // System.out.println("[PL Movement] SCORE: " + bestPlMovement.getScore());
-        // System.out.println("[PL Movement] FROM: " + bestPlPiece.getX() + "-" + bestPlPiece.getY());
-        // System.out.println(
-        //         "[PL Movement] TO: " + bestPlPiece.getMovement().getGoX() + "-" + bestPlPiece.getMovement().getGoY());
-        // System.out.println("[PL Movement] EAT: " + bestPlMovement.isEatMovement() + "\n");
 
         iaValidPieces.getFirst().setMovement(iaValidPieces.getFirst().getValidMoves().getFirst());
         copyMap.movePiece(iaValidPieces.getFirst());
@@ -105,12 +75,6 @@ public class IA {
             boolean hasMoves = pieces.get(i).checkValidMoves(m.getMap());
 
             if (hasMoves) {
-                // System.out.println("Checked valid moves for " + pieces.get(i).toString() + ". Nº of valid movements: "
-                //         + pieces.get(i).getValidMoves().size());
-                // for (Movement movenent : pieces.get(i).getValidMoves()) {
-                //     System.out.println("\tMovement: " + movenent.getGoX() + " " + movenent.getGoY());
-                // }
-
                 validPieces.add(pieces.get(i));
             }
         }
@@ -176,16 +140,6 @@ public class IA {
             piece.getMovement().setScore(piece.getMovement().getScore() + getMinValue(Scores));
             System.out.println("SCORE MAIS BAIXO DE HUMANO: " + getMinValue(Scores));
             System.out.println("SCORE FINAL: " + piece.getMovement().getScore());
-            // LinkedList<Movement> movePieces = plPiece.getValidMoves();
-
-            // for (int i = 0; i < movePieces.size(); i++) {
-            //     Movement movement = new Movement(movePieces.get(i));
-            //     plPiece.setMovement(movement);
-
-            //     int score = Score(false, movement, plPiece);
-
-            //     movePieces.get(i).setScore(score);
-            // }
 
         }
         return;
@@ -259,7 +213,7 @@ public class IA {
             if (movement.isEatMovement()) {
                 score -= 10;
             }
-            System.out.println("DEVOLVE SCORE HUMANO => " + score +"da peza " + piece.toString()+" con movemento: " + movement.toString());
+            System.out.println("DEVOLVE SCORE HUMANO => " + score +" da peza " + piece.toString()+" con movemento: " + movement.toString());
             return score;
         }
     }
