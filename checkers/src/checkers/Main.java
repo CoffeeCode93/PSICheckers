@@ -42,12 +42,13 @@ public class Main {
 						}
 					}
 					
-					IA.moveIA(m, true, 1);
+					IA.moveIA(m, true, 2);
 					m.showMap();
 					System.out.println("Exit? [y/*]");
 					s = "";
 					s = in.readLine();
 				} catch (IndexOutOfBoundsException e) {
+					e.printStackTrace();
 					System.out.println("Invalid movement. Out of bounds result.\n");
 				}catch(Exception e) {
 					
