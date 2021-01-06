@@ -72,9 +72,9 @@ public class IA {
         LinkedList<Piece> validPieces = new LinkedList<Piece>();
 
         for (int i = 0; i < pieces.size(); i++) {
-            boolean hasMoves = pieces.get(i).checkValidMoves(m.getMap());
+            int hasMoves = pieces.get(i).checkValidMoves(m.getMap());
 
-            if (hasMoves) {
+            if (hasMoves > 0) {
                 validPieces.add(pieces.get(i));
             }
         }

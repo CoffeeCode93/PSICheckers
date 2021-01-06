@@ -1,5 +1,6 @@
 package checkers;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class Piece implements Comparable<Piece>{
@@ -10,7 +11,7 @@ public class Piece implements Comparable<Piece>{
 	private int type = 0;
 	private boolean isKing = false;
 	private Movement movement = new Movement(this);
-	private boolean isEated = false;
+	private boolean canEat = false;
 	private LinkedList<Movement> validMoves;
 	
 	public Piece(int x, int y) {
@@ -26,7 +27,7 @@ public class Piece implements Comparable<Piece>{
 		this.isKing = p.isKing;
 		this.movement = new Movement(p.movement);
 		this.movement.setPiece(this);
-		this.isEated = p.isEated;
+		this.canEat = p.canEat;
 		if (p.getValidMoves() != null) {
 			this.validMoves = new LinkedList<Movement>(p.getValidMoves());			
 		} else {
@@ -47,12 +48,12 @@ public class Piece implements Comparable<Piece>{
 		this.id = id;
 	}
 
-	public boolean isEated() {
-		return isEated;
+	public void setCanEat(boolean canEat) {
+		this.canEat = canEat;
 	}
-	
-	public void setEated(boolean isEated) {
-		this.isEated = isEated;
+
+	public boolean canEat() {
+		return canEat;
 	}
 	
 	public int getX() {
@@ -104,16 +105,26 @@ public class Piece implements Comparable<Piece>{
 		return validMoves;
 	}
 	
-	public boolean checkValidMoves(Piece[][] map) {
-		boolean hasMoves = false;
-		validMoves = MoveChecker.getMovements(this, map);
-		
-		if (validMoves.size() > 0) {
-			hasMoves = true;
-		}
-		
-		return hasMoves;
-	}
+	public int checkValidMoves(Piece[][] map) {
+        int hasMoves = 0;
+        validMoves = MoveChecker.getMovements(this, map);
+
+        if (validMoves.size() > 0) {
+            hasMoves = 1;
+            for (Movement movement: validMoves) {
+                if (movement.isEatMovement()) {
+                    setMovement(movement);
+                    canEat = true;
+                    hasMoves = 2;
+                } else if (this.movement == null) {
+                    setMovement(movement);
+                }
+            }
+        }
+
+        Collections.sort(validMoves);
+        return hasMoves;
+    }
 
 	/* Only use when the piece has movements. The list of movements must be sorted */
 	@Override
